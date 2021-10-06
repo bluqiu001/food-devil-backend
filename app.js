@@ -1,12 +1,19 @@
 const keys = require('./config');
 const mongoose = require('mongoose');
 const Restaurant = require('./models/restaurantSchema');
+const Food = require('./models/foodSchema');
+const Review = require('./models/reviewSchema');
+const User = require('./models/userSchema');
 
 mongoose
   .connect(keys.mongodb_srv)
   .then(() => console.log('Connected to database'))
   .catch((err) => console.log(err));
 
-const restaurantTest = new Restaurant({ name: 'Tandoor', location: 'WU1' });
+const userTest = new User({
+  full_name: 'Ashabur Rahman',
+  username: 'Test123',
+  password: 'xyza',
+});
 
-restaurantTest.save().then(() => console.log('Saved restaurant'));
+userTest.save().then(() => console.log('Saved user'));
