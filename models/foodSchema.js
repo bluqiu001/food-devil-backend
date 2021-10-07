@@ -6,6 +6,7 @@ const foodSchema = new mongoose.Schema({
   restaurantId: { type: String, required: true, unique: true },
   name: { type: String, required: true },
   price: { type: Number, required: true, min: 0 },
+  allergens: [String],
   serving_size: { type: String, required: true },
   total_cal: { type: Number, required: true, min: 0 },
   fat: { type: Number, min: 0 },
