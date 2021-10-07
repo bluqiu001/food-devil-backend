@@ -12,7 +12,7 @@ mongoose
 
 const userTest = new User({
   full_name: 'Ashabur Rahman',
-  username: 'Test123',
+  username: 'Test123-345',
   password: 'xyza',
 });
 
