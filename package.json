@@ -19,6 +19,9 @@
   "homepage": "https://github.com/bluqiu001/food-devil-backend#readme",
   "dependencies": {
     "dotenv": "^10.0.0",
-    "mongoose": "^6.0.9"
+    "express": "^4.17.1",
+    "external-ip": "^2.3.1",
+    "mongoose": "^6.0.9",
+    "request": "^2.88.2"
   }
 }
