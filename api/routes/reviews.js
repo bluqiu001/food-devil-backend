@@ -29,23 +29,6 @@ router.get('/:reviewId', (req, res) => {
     });
 });
 
-router.patch('/:reviewId', (req, res, next) => {
-  const id = req.params.reviewId;
-  const updateOps = {};
-  for (const ops of req.body) {
-    updateOps[ops.propName] = ops.value;
-  }
-  Reviews.updateOne(
-    { _id: id },
-    {
-      $set: { updateOps },
-    },
-  )
-    .exec()
-    .then((doc) => res.status(200).json(doc))
-    .catch((err) => res.status(500).json({ error: err }));
-});
-
 router.delete('/:reviewId', (req, res, next) => {
   const id = req.params.reviewId;
   Reviews.remove({ _id: id })
