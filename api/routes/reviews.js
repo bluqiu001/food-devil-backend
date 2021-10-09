@@ -29,6 +29,26 @@ router.get('/:reviewId', (req, res) => {
     });
 });
 
+router.post('/', (req, res, next) => {
+  const id = req.params.reviewId;
+  const review = new Reviews({
+    user_id: req.body.user_id,
+    restaurant_id: req.body.restaurant_id,
+    description: req.body.description,
+    stars: req.body.stars,
+    is_anonymous: req.body.is_anonymous,
+  });
+  review
+    .save()
+    .then((doc) => {
+      res.status(201).json({
+        message: 'Review created',
+        createdReview: doc,
+      });
+    })
+    .catch((err) => console.log(err));
+});
+
 router.patch('/:reviewId', (req, res, next) => {
   const id = req.params.reviewId;
   Reviews.updateOne(
