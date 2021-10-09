@@ -1,9 +1,12 @@
 const express = require('express');
-const app = express();
 const cors = require('cors');
 const restaurantRoutes = require('./api/routes/restaurants');
 const reviewsRoutes = require('./api/routes/reviews');
+
+const app = express();
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.use('/restaurants', restaurantRoutes);
 app.use('/reviews', reviewsRoutes);

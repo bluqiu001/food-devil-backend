@@ -29,6 +29,23 @@ router.get('/:reviewId', (req, res) => {
     });
 });
 
+router.patch('/:reviewId', (req, res, next) => {
+  const id = req.params.reviewId;
+  Reviews.updateOne(
+    { _id: id },
+    {
+      $set: {
+        description: req.body.description,
+        stars: req.body.stars,
+        is_anonymous: req.body.anonymous,
+      },
+    },
+  )
+    .exec()
+    .then((doc) => res.status(200).json(doc))
+    .catch((err) => res.status(500).json(err));
+});
+
 router.delete('/:reviewId', (req, res, next) => {
   const id = req.params.reviewId;
   Reviews.remove({ _id: id })
