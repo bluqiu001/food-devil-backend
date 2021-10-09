@@ -31,6 +31,26 @@ router.get('/:mealId', (req, res) => {
     });
 });
 
+router.post('/', (req, res, next) => {
+    const id = req.params.mealId;
+    const meal = new Meal({
+      user_id: req.body.user_id,
+      foods: req.body.foods
+    });
+    meal
+      .save()
+      .then((doc) => {
+        res.status(201).json({
+          message: 'Meal created',
+          createdReview: doc,
+        });
+      })
+      .catch((err) => console.log(err));
+
+
+   
+  });
+
 router.patch('/:mealId', (req, res, next) => {
     const id = req.params.mealId;
     Meal.updateOne(
