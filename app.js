@@ -1,28 +1,29 @@
-const keys = require('./config');
-const mongoose = require('mongoose');
-const Restaurant = require('./models/restaurantSchema');
-const Food = require('./models/foodSchema');
-const Review = require('./models/reviewSchema');
-const User = require('./models/userSchema');
-const Meal = require('./models/mealSchema');
+const express = require('express');
+const cors = require('cors');
+const restaurantRoutes = require('./api/routes/restaurants');
+const reviewsRoutes = require('./api/routes/reviews');
 
-mongoose
-  .connect(keys.mongodb_srv)
-  .then(() => console.log('Connected to database'))
-  .catch((err) => console.log(err));
+const app = express();
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-/**const userTest = new User({
-  full_name: 'Ashabur Rahman',
-  username: 'Test123-345',
-  password: 'xyza',
+app.use('/restaurants', restaurantRoutes);
+app.use('/reviews', reviewsRoutes);
+
+app.use((req, res, next) => {
+  const error = new Error('Not found');
+  error.status = 404;
+  next(error);
 });
 
-userTest.save().then(() => console.log('Saved user'));
-**/
-
-const mealTest = new Meal({
-  user_id: 'testtest',
-  foods: ['615e25ee7a51ba6ed79c9b02', '615e25ee7a51ba6ed79c9b02']
+app.use((error, req, res, next) => {
+  res.status(error.status || 500);
+  res.json({
+    error: {
+      message: error.message,
+    },
+  });
 });
 
-mealTest.save().then(() => console.log('Saved user'));
+module.exports = app;
