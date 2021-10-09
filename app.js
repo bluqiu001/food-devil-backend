@@ -25,4 +25,4 @@ const mealTest = new Meal({
   foods: ['615e25ee7a51ba6ed79c9b02', '615e25ee7a51ba6ed79c9b02']
 });
 
-mealTest.save().then(() => console.log('Saved user'));
+mealTest.save().then(() => console.log('Saved meal'));

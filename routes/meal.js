@@ -11,10 +11,9 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
-
-// This section will help you get a list of all the records.
-// GET ALL REVIEWS
-mealRoutes.route("/review").get(function (req, res) {
+// This section will help you get a single record by id
+// (CURRENTLY UNUSED)
+mealRoutes.route("/meal/:id").get(function (req, res) {
   let db_connect = dbo.getDb("Food-Devil");
   db_connect
     .collection("reviews")
@@ -25,9 +24,9 @@ mealRoutes.route("/review").get(function (req, res) {
     });
 });
 
-// This section will help you get a single record by id
-// (CURRENTLY UNUSED)
-mealRoutes.route("/record/:id").get(function (req, res) {
+// This section will help you get a list of all the records.
+// GET ALL MEALS FOR A USER
+mealRoutes.route("/meal/:id").get(function (req, res) {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId( req.params.id )};
   db_connect
@@ -39,44 +38,32 @@ mealRoutes.route("/record/:id").get(function (req, res) {
 });
 
 // This section will help you create a new record.
-// CREATE REVIEW
-mealRoutes.route("/review").post(function (req, response) {
+// CREATE MEAL
+mealRoutes.route("/meal").post(function (req, response) {
   let db_connect = dbo.getDb("myFirstDatabase");
   let myobj = {
     user_id: req.body.user_id,
-    restaurant_id: req.body.restaurant_id,
-    description: req.body.description,
-    stars: req.body.stars,
-    is_anonymous: req.body.is_anonymous
+    foods: req.body.foods
   };
-  /*let myobj = {
-    user_id: req.query.user_id,
-    restaurant_id: req.query.restaurant_id,
-    description: req.query.description,
-    stars: req.query.stars,
-    is_anonymous: req.query.is_anonymous
-  };*/
 
-  db_connect.collection("reviews").insertOne(myobj, function (err, res) {
+  db_connect.collection("meals").insertOne(myobj, function (err, res) {
     if (err) throw err;
     response.json(res);
   });
 });
 
 // This section will help you update a record by id.
-// UPDATE REVIEW
-mealRoutes.route("/review/:id").post(function (req, response) {
+// UPDATE MEAL
+mealRoutes.route("/meal/:id").post(function (req, response) {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId( req.params.id )};
   let newvalues = {
     $set: {
-      description: req.body.description,
-      stars: req.body.stars,
-      is_anonymous: req.body.is_anonymous,
+      foods: req.body.foods
     },
   };
   db_connect
-    .collection("reviews")
+    .collection("meals")
     .updateOne(myquery, newvalues, function (err, res) {
       if (err) throw err;
       console.log("1 document updated");
