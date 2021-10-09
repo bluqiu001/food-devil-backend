@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const restaurantRoutes = require('./api/routes/restaurants');
 const reviewsRoutes = require('./api/routes/reviews');
+const mealsRoutes = require('./api/routes/meals');
 
 const app = express();
 app.use(cors());
@@ -10,6 +11,7 @@ app.use(express.json());
 
 app.use('/restaurants', restaurantRoutes);
 app.use('/reviews', reviewsRoutes);
+app.use('/meals', mealsRoutes);
 
 app.use((req, res, next) => {
   const error = new Error('Not found');
