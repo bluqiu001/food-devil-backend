@@ -4,7 +4,7 @@ const Users = require('../../models/userSchema');
 const bcrypt = require('bcrypt');
 
 
-
+//to change
 router.get('/', (req, res) => {
   Reviews.find()
     .exec()
@@ -16,6 +16,7 @@ router.get('/', (req, res) => {
     });
 });
 
+//to change
 router.get('/:reviewId', (req, res) => {
   const id = req.params.reviewId;
   Reviews.findById(id)
@@ -37,27 +38,30 @@ router.get('/:reviewId', (req, res) => {
 router.post('/', (req, res, next) => {
   //let storedHash = yield bcrypt.hash("user_password", 10, null);   // to get hash
   //let pwd = yield bcrypt.hash(req.body.password, 10, null);
-  var pwd; 
-  bcrypt.hash(req.body.password, 10, function(err, hash) {
-    pwd = hash;
-  });
-  console.log(pwd);
-  const user = new Users({
-    full_name: req.body.full_name,
-    username: req.body.username,
-    password: pwd,
-  });
-  user
-    .save()
-    .then((doc) => {
-      res.status(201).json({
-        message: 'User created',
-        createdUser: doc,
+  bcrypt.hash(req.body.password, 10, (err, hash) => {
+    if (err) {
+      return res.status(500).json({ error: err });
+    } else {
+      const user = new Users({
+        full_name: req.body.full_name,
+        username: req.body.username,
+        password: hash,
       });
-    })
-    .catch((err) => console.log(err));
+      user
+      .save()
+      .then((doc) => {
+        res.status(201).json({
+          message: 'User created',
+          createdUser: doc,
+        });
+      })
+      .catch((err) => console.log(err));
+    }
+    
+  });
 });
 
+//to change
 router.patch('/:reviewId', (req, res, next) => {
   const id = req.params.reviewId;
   Reviews.updateOne(
@@ -75,6 +79,7 @@ router.patch('/:reviewId', (req, res, next) => {
     .catch((err) => res.status(500).json(err));
 });
 
+//to change
 router.delete('/:reviewId', (req, res, next) => {
   const id = req.params.reviewId;
   Reviews.remove({ _id: id })
