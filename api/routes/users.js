@@ -38,6 +38,48 @@ router.post('/signup', (req, res, next) => {
     });
 });
 
+router.post('/login', (req, res, next) => {
+  User.find({ username: req.body.username })
+    .exec()
+    .then((user) => {
+      if (user.length < 1) {
+        return res.status(401).json({
+          message: 'Auth failed',
+        });
+      }
+      bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+        if (err) {
+          return res.status(401).json({
+            message: 'Auth failed',
+          });
+        }
+        if (result) {
+          return res.status(200).json({
+            message: 'Auth successful',
+          });
+        }
+        return res.status(401).json({
+          message: 'Auth failed',
+        });
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+});
+
+router.delete('/:userId', (req, res, next) => {
+  User.deleteOne({ _id: req.params.userId })
+    .exec()
+    .then((doc) => {
+      res.status(200).json({
+        message: 'User deleted successfully!',
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+});
 //TRYING TO HASH THIS! Ok to send password plaintext via https.
 // https://security.stackexchange.com/questions/110415/is-it-ok-to-send-plain-text-password-over-https
 // router.post('/', (req, res, next) => {
