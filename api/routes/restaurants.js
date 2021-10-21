@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Restaurant = require('../../models/restaurantSchema');
+const checkAuth = require('../middleware/check-auth');
 
-router.get('/', (req, res) => {
+router.get('/', checkAuth, (req, res) => {
   Restaurant.find()
     .exec()
     .then((docs) => {
@@ -13,7 +14,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/:restaurantId', (req, res) => {
+router.get('/:restaurantId', checkAuth, (req, res) => {
   const id = req.params.restaurantId;
   Restaurant.findById(id)
     .exec()

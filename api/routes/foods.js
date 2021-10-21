@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Food = require('../../models/foodSchema');
+const checkAuth = require('../middleware/check-auth');
 
-router.get('/', (req, res) => {
+router.get('/', checkAuth, (req, res) => {
   Food.find()
     .exec()
     .then((docs) => {
@@ -13,7 +14,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/:foodId', (req, res) => {
+router.get('/:foodId', checkAuth, (req, res) => {
   const id = req.params.foodId;
   Food.findById(id)
     .exec()
@@ -21,15 +22,12 @@ router.get('/:foodId', (req, res) => {
       if (doc) {
         res.status(200).json(doc);
       } else {
-        res
-          .status(404)
-          .json({ message: 'No food found for provided ID' });
+        res.status(404).json({ message: 'No food found for provided ID' });
       }
     })
     .catch((err) => {
       res.status(500).json({ error: err });
     });
 });
-
 
 module.exports = router;

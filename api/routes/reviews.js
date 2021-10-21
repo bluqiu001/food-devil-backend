@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Reviews = require('../../models/reviewSchema');
+const checkAuth = require('../middleware/check-auth');
 
-router.get('/', (req, res) => {
+router.get('/', checkAuth, (req, res) => {
   Reviews.find()
     .exec()
     .then((docs) => {
@@ -13,7 +14,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/:reviewId', (req, res) => {
+router.get('/:reviewId', checkAuth, (req, res) => {
   const id = req.params.reviewId;
   Reviews.findById(id)
     .exec()
@@ -29,7 +30,7 @@ router.get('/:reviewId', (req, res) => {
     });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
   const id = req.params.reviewId;
   const review = new Reviews({
     user_id: req.body.user_id,
@@ -49,7 +50,7 @@ router.post('/', (req, res, next) => {
     .catch((err) => console.log(err));
 });
 
-router.patch('/:reviewId', (req, res, next) => {
+router.patch('/:reviewId', checkAuth, (req, res, next) => {
   const id = req.params.reviewId;
   Reviews.updateOne(
     { _id: id },
@@ -66,7 +67,7 @@ router.patch('/:reviewId', (req, res, next) => {
     .catch((err) => res.status(500).json(err));
 });
 
-router.delete('/:reviewId', (req, res, next) => {
+router.delete('/:reviewId', checkAuth, (req, res, next) => {
   const id = req.params.reviewId;
   Reviews.remove({ _id: id })
     .exec()
