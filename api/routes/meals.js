@@ -3,16 +3,16 @@ const router = express.Router();
 const Meal = require('../../models/mealSchema');
 const checkAuth = require('../middleware/check-auth');
 
-router.get('/', checkAuth, (req, res) => {
-  Meal.find()
-    .exec()
-    .then((docs) => {
-      res.status(200).json(docs);
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err });
-    });
-});
+// router.get('/', checkAuth, (req, res) => {
+//   Meal.find()
+//     .exec()
+//     .then((docs) => {
+//       res.status(200).json(docs);
+//     })
+//     .catch((err) => {
+//       res.status(500).json({ error: err });
+//     });
+// });
 
 router.get('/:mealId', checkAuth, (req, res) => {
   const id = req.params.mealId;
