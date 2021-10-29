@@ -4,6 +4,7 @@ const User = require('../../models/userSchema');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config');
+const checkAuth = require('../middleware/check-auth');
 
 router.post('/signup', (req, res, next) => {
   User.find({ username: req.body.username })
@@ -90,31 +91,23 @@ router.delete('/:userId', (req, res, next) => {
       res.status(500).json({ error: err });
     });
 });
-//TRYING TO HASH THIS! Ok to send password plaintext via https.
-// https://security.stackexchange.com/questions/110415/is-it-ok-to-send-plain-text-password-over-https
-// router.post('/', (req, res, next) => {
-//   //let storedHash = yield bcrypt.hash("user_password", 10, null);   // to get hash
-//   //let pwd = yield bcrypt.hash(req.body.password, 10, null);
-//   bcrypt.hash(req.body.password, 10, (err, hash) => {
-//     if (err) {
-//       return res.status(500).json({ error: err });
-//     } else {
-//       const user = new Users({
-//         full_name: req.body.full_name,
-//         username: req.body.username,
-//         password: hash,
-//       });
-//       user
-//         .save()
-//         .then((doc) => {
-//           res.status(201).json({
-//             message: 'User created',
-//             createdUser: doc,
-//           });
-//         })
-//         .catch((err) => console.log(err));
-//     }
-//   });
-// });
+
+router.get('/:username', (req, res) => {
+  const id = req.params.username;
+  User.findOne({ username: req.params.username })
+    .exec()
+    .then((doc) => {
+      if (doc) {
+        res.status(200).json(doc._id);
+      } else {
+        res
+          .status(404)
+          .json({ message: 'No user found for provided username' });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+});
 
 module.exports = router;
