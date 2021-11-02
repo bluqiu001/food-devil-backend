@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
+const ObjectId = require('mongodb').ObjectId;
 
 //Need to create restaurant ID reference
 //Need to adjust serving size
 const foodSchema = new mongoose.Schema({
-  restaurantId: { type: String, required: true },
+  restaurantId: { type: ObjectId, required: true },
   name: { type: String, required: true },
   price: { type: Number, required: true, min: 0 },
   allergens: [String],

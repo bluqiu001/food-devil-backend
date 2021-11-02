@@ -2,6 +2,28 @@ const express = require('express');
 const router = express.Router();
 const Food = require('../../models/foodSchema');
 const checkAuth = require('../middleware/check-auth');
+var mongoose = require('mongoose');
+const ObjectId = require('mongodb').ObjectId;
+//const { ObjectId } = require('mongodb');
+
+router.get('/restaurant/:restaurantId', (req, res) => {
+  const id = mongoose.Types.ObjectId(req.params.restaurantId);
+  //const id = ObjectId(req.params.restaurantId);
+  //const id = req.params.restaurantId;
+  Food.find({restaurantId: id})
+  //Food.find({restaurantId: "ObjectId(" + '616ad598d252dea11b903aca' + ')'})
+    .exec()
+    .then((doc) => {
+      if (doc) {
+        res.status(200).json(doc);
+      } else {
+        res.status(404).json({ message: 'No restaurant found for ID' });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+});
 
 router.get('/', checkAuth, (req, res) => {
   Food.find()
@@ -29,5 +51,7 @@ router.get('/:foodId', checkAuth, (req, res) => {
       res.status(500).json({ error: err });
     });
 });
+
+
 
 module.exports = router;
