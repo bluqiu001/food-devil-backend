@@ -3,15 +3,9 @@ const router = express.Router();
 const Food = require('../../models/foodSchema');
 const checkAuth = require('../middleware/check-auth');
 var mongoose = require('mongoose');
-const ObjectId = require('mongodb').ObjectId;
-//const { ObjectId } = require('mongodb');
-
 router.get('/restaurant/:restaurantId', (req, res) => {
   const id = mongoose.Types.ObjectId(req.params.restaurantId);
-  //const id = ObjectId(req.params.restaurantId);
-  //const id = req.params.restaurantId;
   Food.find({restaurantId: id})
-  //Food.find({restaurantId: "ObjectId(" + '616ad598d252dea11b903aca' + ')'})
     .exec()
     .then((doc) => {
       if (doc) {
