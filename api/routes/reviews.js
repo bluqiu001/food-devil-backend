@@ -14,6 +14,22 @@ router.get('/', checkAuth, (req, res) => {
     });
 });
 
+router.get('/getRestaurantReviews/:restaurantId', checkAuth, (req, res) => {
+  const id = req.params.restaurantId;
+  Reviews.find({restaurant_id: id})
+    .exec()
+    .then((doc) => {
+      if (doc) {
+        res.status(200).json(doc);
+      } else {
+        res.status(404).json({ message: 'No review found for provided ID' });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+});
+
 router.get('/:reviewId', checkAuth, (req, res) => {
   const id = req.params.reviewId;
   Reviews.findById(id)

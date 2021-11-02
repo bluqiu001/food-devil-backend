@@ -14,6 +14,22 @@ const checkAuth = require('../middleware/check-auth');
 //     });
 // });
 
+router.get('/getUserMeals/:mealId', checkAuth, (req, res) => {
+  const id = req.params.mealId;
+  Meal.find({user_id: id})
+    .exec()
+    .then((doc) => {
+      if (doc) {
+        res.status(200).json(doc);
+      } else {
+        res.status(404).json({ message: 'No meal found for provided ID' });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+});
+
 router.get('/:mealId', checkAuth, (req, res) => {
   const id = req.params.mealId;
   Meal.findById(id)
