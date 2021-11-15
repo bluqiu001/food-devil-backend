@@ -110,4 +110,21 @@ router.get('/:username', (req, res) => {
     });
 });
 
+router.get('/', (req, res) => {
+  User.find({}, '_id username')
+    .exec()
+    .then((doc) => {
+      if (doc) {
+        res.status(200).json(doc);
+      } else {
+        res
+          .status(404)
+          .json({ message: 'No user found for provided username' });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+});
+
 module.exports = router;

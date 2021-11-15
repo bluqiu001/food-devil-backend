@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const ObjectId = require('mongodb').ObjectId;
 
 //Need to create restaurant ID reference
-//Need to adjust serving size
 const foodSchema = new mongoose.Schema({
   restaurantId: { type: ObjectId, required: true },
   name: { type: String, required: true },
