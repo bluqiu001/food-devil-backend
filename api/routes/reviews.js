@@ -80,7 +80,6 @@ router.patch('/:reviewId', checkAuth, (req, res, next) => {
 
 router.patch('/upvote/:reviewId', checkAuth, (req, res, next) => {
   const id = req.params.reviewId;
-  var query = {_id: id};
   Reviews.findOneAndUpdate(
     {_id :id}, 
     {$inc : {'helpful' : 1}}, {new: true})
@@ -91,7 +90,6 @@ router.patch('/upvote/:reviewId', checkAuth, (req, res, next) => {
 
 router.patch('/downvote/:reviewId', checkAuth, (req, res, next) => {
   const id = req.params.reviewId;
-  var query = {_id: id};
   Reviews.findOneAndUpdate(
     {_id :id}, 
     {$inc : {'unhelpful' : 1}}, {new: true})
