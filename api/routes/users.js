@@ -93,7 +93,7 @@ router.delete('/:userId', (req, res, next) => {
 });
 
 //Get a userid associated with a username
-router.get('/get_userid/:username', (req, res) => {
+router.get('/:username', (req, res) => {
   const id = req.params.username;
   User.findOne({ username: req.params.username })
     .exec()
