@@ -111,18 +111,18 @@ router.get('/username/:username', (req, res) => {
     });
 });
 
-// Get a user associated with a userid
+// Get a username associated with a userid
 router.get('/userid/:userid', (req, res) => {
   const id = req.params.userid;
   User.findOne({ _id: id})
     .exec()
     .then((doc) => {
       if (doc) {
-        res.status(200).json(doc);
+        res.status(200).json(doc.username);
       } else {
         res
           .status(404)
-          .json({ message: 'No user found for provided userid' });
+          .json({ message: 'No username found for provided userid' });
       }
     })
     .catch((err) => {
