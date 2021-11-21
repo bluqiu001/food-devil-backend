@@ -92,7 +92,8 @@ router.delete('/:userId', (req, res, next) => {
     });
 });
 
-router.get('/:username', (req, res) => {
+//Get a userid associated with a username
+router.get('/username/:username', (req, res) => {
   const id = req.params.username;
   User.findOne({ username: req.params.username })
     .exec()
@@ -102,7 +103,7 @@ router.get('/:username', (req, res) => {
       } else {
         res
           .status(404)
-          .json({ message: 'No user found for provided username' });
+          .json({ message: 'No userid found for provided username' });
       }
     })
     .catch((err) => {
@@ -110,6 +111,26 @@ router.get('/:username', (req, res) => {
     });
 });
 
+// Get a user associated with a userid
+router.get('/userid/:userid', (req, res) => {
+  const id = req.params.userid;
+  User.findOne({ _id: id})
+    .exec()
+    .then((doc) => {
+      if (doc) {
+        res.status(200).json(doc);
+      } else {
+        res
+          .status(404)
+          .json({ message: 'No user found for provided userid' });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+});
+
+// Get all users
 router.get('/', (req, res) => {
   User.find({}, '_id username')
     .exec()
