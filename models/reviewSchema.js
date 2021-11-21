@@ -8,6 +8,8 @@ const reviewSchema = new mongoose.Schema(
     description: { type: String, required: true },
     stars: { type: Number, min: 0, max: 5, required: true },
     is_anonymous: { type: Boolean, required: true },
+    helpful: { type: Number, type: Number, default: 0},
+    unhelpful: { type: Number, type: Number, default: 0}
   },
   {
     timestamps: true,

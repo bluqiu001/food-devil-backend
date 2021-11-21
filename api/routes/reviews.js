@@ -83,6 +83,30 @@ router.patch('/:reviewId', checkAuth, (req, res, next) => {
     .catch((err) => res.status(500).json(err));
 });
 
+router.patch('/upvote/:reviewId', checkAuth, (req, res, next) => {
+  const id = req.params.reviewId;
+  var query = {_id: id};
+  var review = Reviews.findOne(query);
+  Reviews.findOneAndUpdate(
+    {_id :id}, 
+    {$inc : {'helpful' : 1}})
+    .exec()
+    .then((doc) => res.status(200).json(doc))
+    .catch((err) => res.status(500).json(err));
+});
+
+router.patch('/downvote/:reviewId', checkAuth, (req, res, next) => {
+  const id = req.params.reviewId;
+  var query = {_id: id};
+  var review = Reviews.findOne(query);
+  Reviews.findOneAndUpdate(
+    {_id :id}, 
+    {$inc : {'unhelpful' : 1}})
+    .exec()
+    .then((doc) => res.status(200).json(doc))
+    .catch((err) => res.status(500).json(err));
+});
+
 router.delete('/:reviewId', checkAuth, (req, res, next) => {
   const id = req.params.reviewId;
   Reviews.remove({ _id: id })
