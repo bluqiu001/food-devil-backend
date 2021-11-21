@@ -62,7 +62,7 @@ router.post('/login', (req, res, next) => {
               userId: user[0]._id,
             },
             keys.jwt_key,
-            { expiresIn: '24h' },
+            { expiresIn: '7d' },
           );
           return res.status(200).json({
             message: 'Auth successful',
