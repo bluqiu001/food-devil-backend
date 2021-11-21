@@ -57,14 +57,9 @@ router.post('/', checkAuth, (req, res, next) => {
   });
   review
     .save()
-    .then((doc) => {
-      res.status(201).json({
-        message: 'Review created',
-        createdReview: doc,
-      });
-    })
-    .catch((err) => console.log(err));
-});
+    .then((doc) => res.status(200).json(doc))
+    .catch((err) => res.status(500).json(err))
+  });
 
 router.patch('/:reviewId', checkAuth, (req, res, next) => {
   const id = req.params.reviewId;
@@ -76,7 +71,7 @@ router.patch('/:reviewId', checkAuth, (req, res, next) => {
         stars: req.body.stars,
         is_anonymous: req.body.anonymous,
       },
-    },
+    }, {new: true},
   )
     .exec()
     .then((doc) => res.status(200).json(doc))
@@ -86,10 +81,9 @@ router.patch('/:reviewId', checkAuth, (req, res, next) => {
 router.patch('/upvote/:reviewId', checkAuth, (req, res, next) => {
   const id = req.params.reviewId;
   var query = {_id: id};
-  var review = Reviews.findOne(query);
   Reviews.findOneAndUpdate(
     {_id :id}, 
-    {$inc : {'helpful' : 1}})
+    {$inc : {'helpful' : 1}}, {new: true})
     .exec()
     .then((doc) => res.status(200).json(doc))
     .catch((err) => res.status(500).json(err));
@@ -98,10 +92,9 @@ router.patch('/upvote/:reviewId', checkAuth, (req, res, next) => {
 router.patch('/downvote/:reviewId', checkAuth, (req, res, next) => {
   const id = req.params.reviewId;
   var query = {_id: id};
-  var review = Reviews.findOne(query);
   Reviews.findOneAndUpdate(
     {_id :id}, 
-    {$inc : {'unhelpful' : 1}})
+    {$inc : {'unhelpful' : 1}}, {new: true})
     .exec()
     .then((doc) => res.status(200).json(doc))
     .catch((err) => res.status(500).json(err));

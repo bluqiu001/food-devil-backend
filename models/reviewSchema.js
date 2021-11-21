@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-//Need to create user, restaurant id ref
 const reviewSchema = new mongoose.Schema(
   {
     user_id: { type: String, required: true },
@@ -15,6 +14,8 @@ const reviewSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+
+reviewSchema.index({user_id: 1, restaurant_id: 1}, {unique: true});
 
 const Review = mongoose.model('Review', reviewSchema);
 
