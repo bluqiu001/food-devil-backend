@@ -93,7 +93,7 @@ router.delete('/:userId', (req, res, next) => {
 });
 
 //Get a userid associated with a username
-router.get('/username/:username', (req, res) => {
+router.get('/get_userid/:username', (req, res) => {
   const id = req.params.username;
   User.findOne({ username: req.params.username })
     .exec()
@@ -112,7 +112,7 @@ router.get('/username/:username', (req, res) => {
 });
 
 // Get a username associated with a userid
-router.get('/userid/:userid', (req, res) => {
+router.get('/get_username/:userid', (req, res) => {
   const id = req.params.userid;
   User.findOne({ _id: id})
     .exec()
