@@ -60,7 +60,7 @@ router.post('/', checkAuth, (req, res, next) => {
         createdReview: doc,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => res.status(500).json(err));
 });
 
 router.patch('/:mealId', checkAuth, (req, res, next) => {
