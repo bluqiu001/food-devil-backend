@@ -15,7 +15,7 @@ const reviewSchema = new mongoose.Schema(
   },
 );
 
-reviewSchema.index({user_id: 1, restaurant_id: 1}, {unique: true});
+reviewSchema.index({'user_id': 1, 'restaurant_id': 1}, {unique: true});
 
 const Review = mongoose.model('Review', reviewSchema);
 
