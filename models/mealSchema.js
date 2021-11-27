@@ -5,8 +5,7 @@ const Schema = mongoose.Schema;
 const mealSchema = new mongoose.Schema(
   {
     user_id: { type: String, required: true },
-    foods: [{ type: Schema.Types.ObjectId, ref: 'Food' }],
-    restaurantId: { type: Schema.Types.ObjectId, required: true, ref: 'Restaurant'}
+    foods: [{ type: Schema.Types.ObjectId, ref: 'Food' }]
 
   },
   {
