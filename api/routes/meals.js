@@ -58,14 +58,14 @@ router.get('/:mealId', checkAuth, (req, res) => {
 
 
 router.post('/', checkAuth, async (req, res, next) => {
-  var restaurants = []
+  var restaurants = new Set();
   await Food.find({
     _id: { $in: req.body.foods },
   })
     .exec()
     .then((doc) => {
       for (const entry of doc) {
-        restaurants.push(entry.restaurantId)
+        restaurants.add(entry.restaurantId.toString())
       }
     })
     .catch((err) => console.log(err))
@@ -73,7 +73,7 @@ router.post('/', checkAuth, async (req, res, next) => {
   const meal = new Meal({
     user_id: req.body.user_id,
     foods: req.body.foods,
-    restaurants: restaurants,
+    restaurants: Array.from(restaurants)
   })
 
   meal
