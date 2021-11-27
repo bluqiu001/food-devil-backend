@@ -36,6 +36,25 @@ router.get('/:mealId', checkAuth, (req, res) => {
     })
 })
 
+router.get('/getUserRestaurantMeals', checkAuth, (req, res) => {
+  const user_id = req.body.user_id;
+  const restaurantId = req.body.restaurantId
+  Meal.find({user_id: user_id, restaurants: restaurantId})
+  //Expand the food-ids to the food table, grabbing their names 
+    .populate({path: 'foods', select: 'name'})
+    .exec()
+    .then((doc) => {
+      if (doc) {
+        res.status(200).json(doc);
+      } else {
+        res.status(404).json({ message: 'No meal(s) found for provided user_id and restaurantId' });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+});
+
 router.post('/', checkAuth, async (req, res, next) => {
   var restaurants = []
   await Food.find({
