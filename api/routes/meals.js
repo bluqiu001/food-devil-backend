@@ -20,22 +20,6 @@ router.get('/getUserMeals/:mealId', checkAuth, (req, res) => {
     })
 })
 
-router.get('/:mealId', checkAuth, (req, res) => {
-  const id = req.params.mealId
-  Meal.findById(id)
-    .exec()
-    .then((doc) => {
-      if (doc) {
-        res.status(200).json(doc)
-      } else {
-        res.status(404).json({ message: 'No meal found for provided ID' })
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err })
-    })
-})
-
 router.get('/getUserRestaurantMeals', checkAuth, (req, res) => {
   const user_id = req.body.user_id;
   const restaurantId = req.body.restaurantId
@@ -54,6 +38,24 @@ router.get('/getUserRestaurantMeals', checkAuth, (req, res) => {
       res.status(500).json({ error: err });
     });
 });
+
+router.get('/:mealId', checkAuth, (req, res) => {
+  const id = req.params.mealId
+  Meal.findById(id)
+    .exec()
+    .then((doc) => {
+      if (doc) {
+        res.status(200).json(doc)
+      } else {
+        res.status(404).json({ message: 'No meal found for provided ID' })
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err })
+    })
+})
+
+
 
 router.post('/', checkAuth, async (req, res, next) => {
   var restaurants = []
