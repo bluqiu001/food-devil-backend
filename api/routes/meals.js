@@ -20,7 +20,7 @@ router.get('/getUserMeals/:mealId', checkAuth, (req, res) => {
     })
 })
 
-router.get('/getUserRestaurantMeals', checkAuth, (req, res) => {
+router.post('/getUserRestaurantMeals', checkAuth, (req, res) => {
   const user_id = req.body.user_id;
   const restaurantId = req.body.restaurantId
   Meal.find({user_id: user_id, restaurants: restaurantId})
