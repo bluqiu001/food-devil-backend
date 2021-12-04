@@ -4,7 +4,7 @@ const Reviews = require('../../models/reviewSchema')
 const checkAuth = require('../middleware/check-auth')
 const mongoose = require('mongoose')
 
-router.get('/', checkAuth, (req, res) => {
+router.get('/', (req, res) => {
   Reviews.find()
     .exec()
     .then((docs) => {
@@ -15,7 +15,7 @@ router.get('/', checkAuth, (req, res) => {
     })
 })
 
-router.get('/getRestaurantReviews/:restaurantId', checkAuth, (req, res) => {
+router.get('/getRestaurantReviews/:restaurantId', (req, res) => {
   const id = req.params.restaurantId
   Reviews.find({ restaurant_id: id })
     .exec()
@@ -31,7 +31,7 @@ router.get('/getRestaurantReviews/:restaurantId', checkAuth, (req, res) => {
     })
 })
 
-router.get('/:reviewId', checkAuth, (req, res) => {
+router.get('/:reviewId', (req, res) => {
   const id = req.params.reviewId
   Reviews.findById(id)
     .exec()
