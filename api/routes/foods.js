@@ -4,7 +4,7 @@ const Food = require('../../models/foodSchema')
 const checkAuth = require('../middleware/check-auth')
 const mongoose = require('mongoose')
 
-router.get('/restaurant/:restaurantId', checkAuth, (req, res) => {
+router.get('/restaurant/:restaurantId', (req, res) => {
   const id = mongoose.Types.ObjectId(req.params.restaurantId)
   Food.find({ restaurantId: id })
     .exec()
@@ -20,7 +20,7 @@ router.get('/restaurant/:restaurantId', checkAuth, (req, res) => {
     })
 })
 
-router.get('/', checkAuth, (req, res) => {
+router.get('/', (req, res) => {
   Food.find()
     .exec()
     .then((docs) => {
@@ -31,7 +31,7 @@ router.get('/', checkAuth, (req, res) => {
     })
 })
 
-router.get('/:foodId', checkAuth, (req, res) => {
+router.get('/:foodId', (req, res) => {
   const id = req.params.foodId
   Food.findById(id)
     .exec()
