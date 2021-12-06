@@ -1,9 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-//Need to create restaurant ID reference
-//Need to adjust serving size
 const foodSchema = new mongoose.Schema({
-  restaurantId: { type: String, required: true },
+  restaurantId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: 'Restaurant',
+  },
   name: { type: String, required: true },
   price: { type: Number, required: true, min: 0 },
   allergens: [String],
@@ -17,8 +20,8 @@ const foodSchema = new mongoose.Schema({
   vitaminC: { type: Number, min: 0, max: 100 },
   calcium: { type: Number, min: 0, max: 100 },
   iron: { type: Number, min: 0, max: 100 },
-});
+})
 
-const Food = mongoose.model('Food', foodSchema);
+const Food = mongoose.model('Food', foodSchema)
 
-module.exports = Food;
+module.exports = Food

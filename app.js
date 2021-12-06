@@ -11,6 +11,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Use routes 
 app.use('/restaurants', restaurantRoutes);
 app.use('/reviews', reviewsRoutes);
 app.use('/meals', mealsRoutes);

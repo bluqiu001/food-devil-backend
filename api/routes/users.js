@@ -4,6 +4,7 @@ const User = require('../../models/userSchema');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config');
+const checkAuth = require('../middleware/check-auth');
 
 router.post('/signup', (req, res, next) => {
   User.find({ username: req.body.username })
@@ -61,7 +62,7 @@ router.post('/login', (req, res, next) => {
               userId: user[0]._id,
             },
             keys.jwt_key,
-            { expiresIn: '1h' },
+            { expiresIn: '7d' },
           );
           return res.status(200).json({
             message: 'Auth successful',
@@ -90,31 +91,61 @@ router.delete('/:userId', (req, res, next) => {
       res.status(500).json({ error: err });
     });
 });
-//TRYING TO HASH THIS! Ok to send password plaintext via https.
-// https://security.stackexchange.com/questions/110415/is-it-ok-to-send-plain-text-password-over-https
-// router.post('/', (req, res, next) => {
-//   //let storedHash = yield bcrypt.hash("user_password", 10, null);   // to get hash
-//   //let pwd = yield bcrypt.hash(req.body.password, 10, null);
-//   bcrypt.hash(req.body.password, 10, (err, hash) => {
-//     if (err) {
-//       return res.status(500).json({ error: err });
-//     } else {
-//       const user = new Users({
-//         full_name: req.body.full_name,
-//         username: req.body.username,
-//         password: hash,
-//       });
-//       user
-//         .save()
-//         .then((doc) => {
-//           res.status(201).json({
-//             message: 'User created',
-//             createdUser: doc,
-//           });
-//         })
-//         .catch((err) => console.log(err));
-//     }
-//   });
-// });
+
+//Get a userid associated with a username
+router.get('/:username', (req, res) => {
+  const id = req.params.username;
+  User.findOne({ username: req.params.username })
+    .exec()
+    .then((doc) => {
+      if (doc) {
+        res.status(200).json(doc._id);
+      } else {
+        res
+          .status(404)
+          .json({ message: 'No userid found for provided username' });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+});
+
+// Get a username associated with a userid
+router.get('/get_username/:userid', (req, res) => {
+  const id = req.params.userid;
+  User.findOne({ _id: id})
+    .exec()
+    .then((doc) => {
+      if (doc) {
+        res.status(200).json(doc.username);
+      } else {
+        res
+          .status(404)
+          .json({ message: 'No username found for provided userid' });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+});
+
+// Get all users
+router.get('/', (req, res) => {
+  User.find({}, '_id username')
+    .exec()
+    .then((doc) => {
+      if (doc) {
+        res.status(200).json(doc);
+      } else {
+        res
+          .status(404)
+          .json({ message: 'No user found for provided username' });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+});
 
 module.exports = router;
